@@ -17,4 +17,5 @@ class Colors {
   static const Color warrning = Color(0xFFECC722);
   static const Color green = Color(0xFF3fc380);
   static const Color shadow = Color(0x15000000);
+  static const Color Bg = Color(0xFFC6EFED);
 }

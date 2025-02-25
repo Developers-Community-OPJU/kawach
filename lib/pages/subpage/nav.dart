@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart' hide Colors;
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kawach/constant/color.dart';
 import 'package:kawach/constant/image.dart';
@@ -15,30 +16,110 @@ class NavPage extends StatefulWidget {
 
 class _NavPageState extends State<NavPage> {
   bool hide = true;
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  GoogleMapController? _mapController;
+  LatLng _initialPosition = const LatLng(
+    20.5937,
+    78.9629,
+  ); // Default: India center
+  bool _isMapInitialized = false;
+  Set<Marker> _markers = {};
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+  }
 
-  static const CameraPosition _kLake = CameraPosition(
-    bearing: 192.8334901395799,
-    target: LatLng(37.43296265331129, -122.08832357078792),
-    tilt: 59.440717697143555,
-    zoom: 19.151926040649414,
-  );
+  Future<void> _getUserLocation() async {
+    try {
+      Position position = await _determinePosition();
+      setState(() {
+        _initialPosition = LatLng(position.latitude, position.longitude);
+      });
+      if (_isMapInitialized) {
+        _mapController?.animateCamera(CameraUpdate.newLatLng(_initialPosition));
+        _markers.clear(); // Clear previous markers
+        _markers.add(
+          Marker(
+            markerId: const MarkerId("currentLocation"),
+            position: _initialPosition,
+            infoWindow: const InfoWindow(
+              title: "You are here",
+              snippet: "This is your current location",
+            ),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          ),
+        );
+
+      }
+    } catch (e) {
+      // Handle error or show a message to the user
+      print(e);
+    }
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied');
+    }
+
+    // Permissions granted, get the position
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      _mapController = controller;
+      _isMapInitialized = true;
+      // Once map is created, animate camera to current location if already fetched
+      _mapController?.animateCamera(CameraUpdate.newLatLng(_initialPosition));
+    });
+  }
+
+  // static const CameraPosition _kGooglePlex = CameraPosition(
+  //   target: LatLng(37.42796133580664, -122.085749655962),
+  //   zoom: 10.4746,
+  // );
+
+  // static const CameraPosition _kLake = CameraPosition(
+  //   bearing: 192.8334901395799,
+  //   target: LatLng(37.43296265331129, -122.08832357078792),
+  //   tilt: 59.440717697143555,
+  //   zoom: 19.151926040649414,
+  // );
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GoogleMap(
           mapType: MapType.hybrid,
-          initialCameraPosition: _kGooglePlex,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
+          initialCameraPosition: CameraPosition(
+            target: _initialPosition,
+            zoom: 16,
+          ),
+          onMapCreated: _onMapCreated,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: true,
+          markers: _markers,
         ),
         if (hide)
           Positioned(

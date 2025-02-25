@@ -37,6 +37,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   google_maps_flutter: ^2.10.0
   step_tracker: ^0.0.5
+  geolocator: ^13.0.2
 
 dev_dependencies:
   flutter_test:
