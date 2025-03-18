@@ -4,6 +4,7 @@ import 'package:kawach/components/stat_box.dart';
 import 'package:kawach/components/stat_box2.dart';
 import 'package:kawach/constant/color.dart';
 import 'package:kawach/constant/image.dart';
+import 'package:kawach/pages/profile.dart';
 import 'package:kawach/utils/size.dart';
 import 'package:kawach/utils/style.dart';
 
@@ -40,7 +41,15 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 10),
                 Row(
                   children: [
-                    CirculerImage(size: 45),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (c) => ProfilePage()),
+                        );
+                      },
+                      child: CirculerImage(size: 45),
+                    ),
                     const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

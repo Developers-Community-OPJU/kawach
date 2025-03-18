@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart' hide Colors;
-import 'package:kawach/constant/color.dart';
+import 'package:flutter/material.dart';
 import 'package:kawach/pages/subpage/contact.dart';
 import 'package:kawach/pages/subpage/home.dart';
 import 'package:kawach/pages/subpage/nav.dart';
@@ -25,12 +24,9 @@ class _NavigationPageState extends State<NavigationPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
-        iconSize: 30,
-        showUnselectedLabels: true,
-        unselectedItemColor: Colors.gray,
-        selectedItemColor: Colors.primary,
-        backgroundColor: Colors.white,
-        currentIndex: navIndex,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
         onTap: (index) {
           setState(() {
             navIndex = index;
@@ -39,8 +35,8 @@ class _NavigationPageState extends State<NavigationPage> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.navigation), label: "Nav"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Stats"),
-          BottomNavigationBarItem(icon: Icon(Icons.call), label: "Contact us"),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: "Stats"),
+          BottomNavigationBarItem(icon: Icon(Icons.call), label: "Help"),
         ],
       ),
       body: navPage[navIndex],
