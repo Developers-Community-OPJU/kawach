@@ -2,8 +2,11 @@ import 'package:flutter/material.dart' hide Colors;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kawach/constant/color.dart';
 import 'package:kawach/pages/splash.dart';
+import 'package:kawach/provider/authprovider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
@@ -25,7 +28,7 @@ class MyApp extends StatelessWidget {
           ),
           home: SplashPage(),
         );
-      }
+      },
     );
   }
 }

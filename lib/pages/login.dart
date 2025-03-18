@@ -2,15 +2,17 @@ import 'package:flutter/material.dart' hide Colors;
 import 'package:kawach/constant/color.dart';
 import 'package:kawach/constant/image.dart';
 import 'package:kawach/pages/otp.dart';
+import 'package:kawach/provider/authprovider.dart';
 import 'package:kawach/utils/style.dart';
 
 class LoginPage extends StatelessWidget {
+  final _phoneCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    // final authProvider = context.watch<Authprovider>();
     return Scaffold(
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Image.asset(
               backGround, // Replace with your background image URL
@@ -42,8 +44,14 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
+                    controller: _phoneCtrl,
+                    keyboardType: TextInputType.number,
                     autovalidateMode: AutovalidateMode.always,
                     validator: (value) {
+                      if (value!.isEmpty)
+                        return "*required";
+                      else if (value.length < 10)
+                        return "enter valid number";
                       return null;
                     },
                     style: bodyText(),
@@ -56,6 +64,11 @@ class LoginPage extends StatelessWidget {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
+                        // authProvider.setSignedInProgress = true;
+                        // authProvider.phoneNoVerification(
+                        //   context,
+                        //   phone: _phoneCtrl.text.trim(),
+                        // );
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => OtpPage()),
@@ -64,7 +77,10 @@ class LoginPage extends StatelessWidget {
                       style: primaryButtonStyle(
                         backgroundColor: Colors.primary,
                       ),
-                      child: Text("Send OTP", style: buttonText()),
+                      child:
+                      // authProvider.getSignedInProgress
+                      //     ? CircularProgressIndicator(strokeWidth: 1.5, color: Colors.white)
+                      Text("Send OTP", style: buttonText()),
                     ),
                   ),
                   SizedBox(height: 10),

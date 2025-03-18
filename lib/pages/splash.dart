@@ -34,9 +34,7 @@ class _SplashPageState extends State<SplashPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(logo, width: deviceWidth(context) * 0.4),
-            const SizedBox(height: 10),
-            Text("Kawach", style: h6()),
+            Image.asset(logo1, width: deviceWidth(context) * 0.6),
           ],
         ),
       ),
