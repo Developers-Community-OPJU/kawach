@@ -1,99 +1,132 @@
-import 'package:flutter/material.dart' hide Colors;
-import 'package:kawach/components/stat_box2.dart';
-import 'package:kawach/constant/color.dart';
-import 'package:kawach/utils/style.dart';
+import 'package:flutter/material.dart';
 
-class ContactPage extends StatefulWidget {
-  const ContactPage({super.key});
+class ContactScreen extends StatelessWidget {
+  ContactScreen({super.key});
 
-  @override
-  State<ContactPage> createState() => _ContactPageState();
-}
+  final _formKey = GlobalKey<FormState>();
 
-class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Contact us", style: subTitle1()),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+      backgroundColor: Colors.white,
+      body: Stack(
         children: [
-          RichText(
-            text: TextSpan(
-              text: "Get in ",
-              style: h6(),
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/register_bg.png', // Replace with your background image
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Form Content
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextSpan(text: "Touch", style: h6(color: Colors.primary)),
+                const SizedBox(height: 100),
+                const Text(
+                  "Get in Touch",
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const Text(
+                  "Need assistance with our app? We're here to help! Reach out to us for support, enquiries, or feedback.",
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                ),
+                const SizedBox(height: 20),
+
+                // Form Fields
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      buildTextField("Name"),
+                      const SizedBox(height: 12),
+                      buildTextField("Email"),
+                      const SizedBox(height: 12),
+                      buildTextField("Mobile No."),
+                      const SizedBox(height: 12),
+                      buildTextField("Feedback", maxLines: 3),
+                      const SizedBox(height: 16),
+
+                      // Send Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              // Handle form submission
+                            }
+                          },
+                          child: const Text(
+                            "Send",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Contact Info
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    contactInfo(Icons.phone, "9835594986"),
+                    const SizedBox(width: 20),
+                    contactInfo(Icons.email, "bhattgyaneesh@gmail.com"),
+                  ],
+                ),
+
+                const SizedBox(height: 40),
               ],
             ),
           ),
-          Text("Tell us how can we be better.", style: caption()),
-          const SizedBox(height: 20),
-          TextFormField(
-            autovalidateMode: AutovalidateMode.always,
-            validator: (value) {
-              return null;
-            },
-            style: bodyText(),
-            decoration: textFieldDecoration(hintText: "Name"),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            autovalidateMode: AutovalidateMode.always,
-            validator: (value) {
-              return null;
-            },
-            style: bodyText(),
-            decoration: textFieldDecoration(hintText: "Email"),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            autovalidateMode: AutovalidateMode.always,
-            validator: (value) {
-              return null;
-            },
-            style: bodyText(),
-            decoration: textFieldDecoration(hintText: "Phone No"),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            autovalidateMode: AutovalidateMode.always,
-            validator: (value) {
-              return null;
-            },
-            style: bodyText(),
-            decoration: textFieldDecoration(hintText: "Message"),
-          ),
-          const SizedBox(height: 30),
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: primaryButtonStyle(backgroundColor: Colors.primary),
-              child: Text("Send", style: buttonText()),
-            ),
-          ),
-          const SizedBox(height: 20),
-          StatBox2(
-            title: "Phone Number",
-            value: "9835594986",
-            icon: Icons.call,
-            iconColor: Colors.primary,
-          ),
-          const SizedBox(height: 14),
-          StatBox2(
-            title: "Email",
-            value: "bhattgyanesh@gmail.com",
-            icon: Icons.email,
-            iconColor: Colors.primary,
-          ),
         ],
       ),
+    );
+  }
+
+  // Function to create text fields
+  Widget buildTextField(String hint, {int maxLines = 1}) {
+    return TextFormField(
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        hintText: hint,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Please enter $hint";
+        }
+        return null;
+      },
+    );
+  }
+
+  // Function to create contact info icons
+  Widget contactInfo(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.white),
+        const SizedBox(width: 5),
+        Text(text, style: const TextStyle(color: Colors.white)),
+      ],
     );
   }
 }

@@ -17,7 +17,7 @@ class _NavigationPageState extends State<NavigationPage> {
     const HomePage(),
     const NavPage(),
     const StatsPage(),
-    const ContactPage(),
+    ContactScreen(),
   ];
   @override
   Widget build(BuildContext context) {

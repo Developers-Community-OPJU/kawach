@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kawach/pages/about.dart';
+import 'package:kawach/pages/charging_station.dart';
 import 'package:kawach/pages/edit_profile.dart';
 import 'package:kawach/pages/notification.dart';
 import 'package:kawach/pages/term.dart';
@@ -87,6 +88,13 @@ class ProfilePage extends StatelessWidget {
                 _buildProfileOption(
                   Icons.notifications,
                   "Find Charging Station",
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (c) => ChargingStationScreen(),
+                        ),
+                      ),
                 ),
                 _buildProfileOption(
                   Icons.upload_file,

@@ -4,6 +4,7 @@ import 'package:kawach/components/stat_box.dart';
 import 'package:kawach/components/stat_box2.dart';
 import 'package:kawach/constant/color.dart';
 import 'package:kawach/constant/image.dart';
+import 'package:kawach/pages/chat.dart';
 import 'package:kawach/pages/profile.dart';
 import 'package:kawach/utils/size.dart';
 import 'package:kawach/utils/style.dart';
@@ -40,24 +41,30 @@ class _HomePageState extends State<HomePage> {
 
                 SizedBox(height: 10),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (c) => ProfilePage()),
-                        );
-                      },
-                      child: CirculerImage(size: 45),
-                    ),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text("Naivedya", style: subTitle2()),
-                        Text("7735837675", style: caption()),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (c) => ProfilePage()),
+                            );
+                          },
+                          child: CirculerImage(size: 45),
+                        ),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Naivedya", style: subTitle2()),
+                            Text("7735837675", style: caption()),
+                          ],
+                        ),
                       ],
                     ),
+                  GestureDetector(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (c) => ChatScreen())), child: Image.asset("assets/images/chat.png", height: 50, width: 50))
                   ],
                 ),
                 const SizedBox(height: 10),
